@@ -35,7 +35,40 @@ dump_boot;
 
 # begin ramdisk changes
 
+# sepolicy
+$bin/magiskpolicy --load sepolicy --save sepolicy \
+  "allow init rootfs file execute_no_trans" \
+;
 
+# If the kernel image and dtbs are separated in the zip
+decompressed_image=/tmp/anykernel/kernel/Image
+compressed_image=$decompressed_image.gz
+if [ -f $compressed_image ]; then
+  # Hexpatch the kernel if Magisk is installed ('skip_initramfs' -> 'want_initramfs')
+  if [ -d $ramdisk/.backup -o -d $ramdisk/.magisk ]; then
+    ui_print " "; ui_print "Magisk detected! Patching kernel so reflashing Magisk is not necessary...";
+    $bin/magiskboot --decompress $compressed_image $decompressed_image;
+    $bin/magiskboot --hexpatch $decompressed_image 736B69705F696E697472616D667300 77616E745F696E697472616D667300;
+    $bin/magiskboot --compress=gzip $decompressed_image $compressed_image;
+
+    # Add our ramdisk files
+    mv $overlay $ramdisk;
+    cp /system_root/init.rc $ramdisk/overlay;
+    insert_line $ramdisk/overlay/init.rc "init.khusika.rc" after 'import /init.usb.rc' "import /init.khusika.rc";
+  fi;
+
+  ui_print "Checking for Project Treble...";
+  if [-e /dev/block/bootdevice/by-name/vendor_a ] && [ ! -L /system/vendor ]; then
+    ui_print "Treble Status: Supported";
+    dtb=/tmp/anykernel/dtb-treble;
+  else
+    ui_print "Treble Status: Not supported";
+    dtb=/tmp/anykernel/dtb-nontreble;
+  fi;
+
+  # Concatenate all of the dtbs to the kernel
+  cat $compressed_image $dtb/*.dtb > /tmp/anykernel/Image.gz-dtb;
+fi;
 
 # end ramdisk changes
 
