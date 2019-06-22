@@ -50,12 +50,7 @@ if [ -f $compressed_image ]; then
     $bin/magiskboot --decompress $compressed_image $decompressed_image;
     $bin/magiskboot --hexpatch $decompressed_image 736B69705F696E697472616D667300 77616E745F696E697472616D667300;
     $bin/magiskboot --compress=gzip $decompressed_image $compressed_image;
-
-    # Add our ramdisk files
-    mv $overlay $ramdisk;
-    cp /system_root/init.rc $ramdisk/overlay;
-    insert_line $ramdisk/overlay/init.rc "init.khusika.rc" after 'import /init.usb.rc' "import /init.khusika.rc";
-  fi;
+ fi;
 
   ui_print "Checking for Project Treble...";
   if [ "$(file_getprop /system_root/system/build.prop ro.treble.enabled)" = "true" ]; then
