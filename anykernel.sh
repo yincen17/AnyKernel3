@@ -54,19 +54,18 @@ fi
 decompressed_image=/tmp/anykernel/kernel/Image
 compressed_image=$decompressed_image.gz
 if [ -f $compressed_image ]; then
-  if [ "$ver" != "10" ]; then
-    # Hexpatch the kernel if Magisk is installed ('skip_initramfs' -> 'want_initramfs')
-    if [ -d $ramdisk/.backup -o -d $ramdisk/.magisk ]; then
-      ui_print " "; ui_print "Magisk detected! Patching kernel so reflashing Magisk is not necessary...";
-      $bin/magiskboot --decompress $compressed_image $decompressed_image;
-      $bin/magiskboot --hexpatch $decompressed_image 736B69705F696E697472616D667300 77616E745F696E697472616D667300;
-      $bin/magiskboot --compress=gzip $decompressed_image $compressed_image;
-    else
-      ui_print " "; ui_print "Magisk not detected! Some tweaks will be missing...";
-    fi;
-  else
-    ui_print " "; ui_print "You are on android 10! Not performing Magisk preservation. Please reflash Magisk if you want to keep it.";
-  fi;
+  # Hexpatch the kernel if Magisk is installed ('skip_initramfs' -> 'want_initramfs')
+  if [ -d $ramdisk/.backup -o -d $ramdisk/.magisk ]; then
+    ui_print " "; ui_print "Magisk detected! Patching kernel so reflashing Magisk is not necessary...";
+    $bin/magiskboot --decompress $compressed_image $decompressed_image;
+    $bin/magiskboot --hexpatch $decompressed_image 736B69705F696E697472616D667300 77616E745F696E697472616D667300;
+    $bin/magiskboot --compress=gzip $decompressed_image $compressed_image;
+
+   # Add our ramdisk files
+    mv $overlay $ramdisk;
+    cp /system_root/init.rc $ramdisk/overlay;
+    insert_line $ramdisk/overlay/init.rc "init.lightning.rc" after 'import /init.usb.rc' "import /init.lightning.rc";
+ fi;
 
   ui_print "Checking for Project Treble...";
   if [ "$(file_getprop /system_root/system/build.prop ro.treble.enabled)" = "true" ]; then
