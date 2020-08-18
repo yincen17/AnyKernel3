@@ -10,56 +10,114 @@ on property:sys.boot_completed=1
    # Enable Spectrum support
    setprop spectrum.support 1
    # Add kernel name
-   setprop persist.spectrum.kernel Mayhem
+   setprop persist.spectrum.kernel SilonT
 
 # Balance (default profile)
 on property:persist.spectrum.profile=0
-	write /sys/module/msm_performance/parameters/cpu_max_freq 0:1958400
-	chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1958400
-	chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-	write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor blu_schedutil
-	write /sys/class/kgsl/kgsl-3d0/max_gpuclk 650000000
-	write /sys/class/kgsl/kgsl-3d0/devfreq/governor msm-adreno-tz
-	chmod 0664 /sys/module/workqueue/parameters/power_efficient
-    write /sys/module/workqueue/parameters/power_efficient Y
-	write /sys/module/cpu_boost/parameters/input_boost_freq 1036800
+   echo 'blu_schedutil' > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+   echo '625800' > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+   echo '2016000' > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+   echo 'blu_schedutil' > /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
+   echo '625800' > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
+   echo '2016000' > /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
+   echo '1' > /sys/devices/system/cpu/cpu0/online
+   echo '1' > /sys/devices/system/cpu/cpu1/online 
+   echo '1' > /sys/devices/system/cpu/cpu2/online 
+   echo '1' > /sys/devices/system/cpu/cpu3/online 
+   echo '1' > /sys/devices/system/cpu/cpu4/online 
+   echo '1' > /sys/devices/system/cpu/cpu5/online 
+   echo '1' > /sys/devices/system/cpu/cpu6/online 
+   echo '1' > /sys/devices/system/cpu/cpu7/online 
+
+ #I/O
+  echo 'cfq' > /sys/block/mmcblk0/queue/scheduler
+ #GPU
+   echo 'msm-adreno-tz' > /sys/class/kgsl/kgsl-3d0/devfreq/governor 
+   echo '1' > /sys/module/adreno_idler/parameters/adreno_idler_active 
+   echo '30' > /sys/module/adreno_idler/parameters/adreno_idler_idlewait 
+   echo '4000' > /sys/module/adreno_idler/parameters/adreno_idler_idleworkload 
+   echo '19200000' >  /sys/class/kgsl/kgsl-3d0/devfreq/min_freq 
+   echo '650000000' > /sys/class/kgsl/kgsl-3d0/max_gpuclk 
 
 # Performance
 on property:persist.spectrum.profile=1
-	write /sys/module/msm_performance/parameters/cpu_max_freq 0:2150400
-	chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 2150400
-	chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-	write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor schedutil
-	write /sys/class/kgsl/kgsl-3d0/max_gpuclk 650000000
-	write /sys/class/kgsl/kgsl-3d0/devfreq/governor performance
-	chmod 0664 /sys/module/workqueue/parameters/power_efficient
-    write /sys/module/workqueue/parameters/power_efficient N
-	write /sys/module/cpu_boost/parameters/input_boost_freq 1401600
+ #CPU
+   echo 'schedutil' > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+   echo '625800' > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+   echo '2016000' > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+   echo 'schedutil' > /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
+   echo '625800' > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
+   echo '2016000' > /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
+   echo '1' > /sys/devices/system/cpu/cpu0/online
+   echo '1' > /sys/devices/system/cpu/cpu1/online 
+   echo '1' > /sys/devices/system/cpu/cpu2/online 
+   echo '1' > /sys/devices/system/cpu/cpu3/online 
+   echo '1' > /sys/devices/system/cpu/cpu4/online 
+   echo '1' > /sys/devices/system/cpu/cpu5/online 
+   echo '1' > /sys/devices/system/cpu/cpu6/online 
+   echo '1' > /sys/devices/system/cpu/cpu7/online 
+
+ #I/O
+       echo 'cfq' > /sys/block/mmcblk0/queue/scheduler
+ #GPU
+   echo 'msm-adreno-tz' > /sys/class/kgsl/kgsl-3d0/devfreq/governor 
+   echo '0' > /sys/module/adreno_idler/parameters/adreno_idler_active 
+   echo '15' > /sys/module/adreno_idler/parameters/adreno_idler_idlewait 
+   echo '7000' > /sys/module/adreno_idler/parameters/adreno_idler_idleworkload 
+   echo '19200000' >  /sys/class/kgsl/kgsl-3d0/devfreq/min_freq 
+   echo '650000000' > /sys/class/kgsl/kgsl-3d0/max_gpuclk
 
 # Battery
 on property:persist.spectrum.profile=2
-	write /sys/module/msm_performance/parameters/cpu_max_freq 0:1401600
-	chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-	write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1401600
-	chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-	write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor powersave
-	write /sys/class/kgsl/kgsl-3d0/max_gpuclk 510000000
-	write /sys/class/kgsl/kgsl-3d0/devfreq/governor msm-adreno-tz
-	chmod 0664 /sys/module/workqueue/parameters/power_efficient
-    write /sys/module/workqueue/parameters/power_efficient Y
-	write /sys/module/cpu_boost/parameters/input_boost_freq 0
+ #CPU
+ echo 'powersafe' > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+   echo '625800' > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+   echo '1689000' > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+   echo 'blu_schedutil' > /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
+   echo '625800' > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
+   echo '1689000' > /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
+   echo '1' > /sys/devices/system/cpu/cpu0/online
+   echo '1' > /sys/devices/system/cpu/cpu1/online 
+   echo '1' > /sys/devices/system/cpu/cpu2/online 
+   echo '1' > /sys/devices/system/cpu/cpu3/online 
+   echo '1' > /sys/devices/system/cpu/cpu4/online 
+   echo '1' > /sys/devices/system/cpu/cpu5/online 
+   echo '1' > /sys/devices/system/cpu/cpu6/online 
+   echo '1' > /sys/devices/system/cpu/cpu7/online
+
+ #I/O
+     echo 'cfq' > /sys/block/mmcblk0/queue/scheduler
+
+ #GPU
+   echo 'simple_ondemand' > /sys/class/kgsl/kgsl-3d0/devfreq/governor 
+   echo '19200000' >  /sys/class/kgsl/kgsl-3d0/devfreq/min_freq 
+   echo '51000000' > /sys/class/kgsl/kgsl-3d0/max_gpuclk 
+   echo '1' > /sys/module/adreno_idler/parameters/adreno_idler_active 
+   echo '15' > /sys/module/adreno_idler/parameters/adreno_idler_idlewait 
+   echo '4000' > /sys/module/adreno_idler/parameters/adreno_idler_idleworkload
 
 # Gaming
 on property:persist.spectrum.profile=3
-	write /sys/module/msm_performance/parameters/cpu_max_freq 0:2208000
-	chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 2208000
-	chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-	write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor performance
-	write /sys/class/kgsl/kgsl-3d0/max_gpuclk 700000000
-	write /sys/class/kgsl/kgsl-3d0/devfreq/governor msm-adreno-tz
-	chmod 0664 /sys/module/workqueue/parameters/power_efficient
-    write /sys/module/workqueue/parameters/power_efficient N
-	write /sys/module/cpu_boost/parameters/input_boost_freq 1401600
+ #CPU
+   echo 'performance' > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+   echo '2016000' > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+   echo '2016000' > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+   echo 'performance' > /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
+   echo '2016000' > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
+   echo '2016000' > /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
+   echo '1' > /sys/devices/system/cpu/cpu0/online
+   echo '1' > /sys/devices/system/cpu/cpu1/online 
+   echo '1' > /sys/devices/system/cpu/cpu2/online 
+   echo '1' > /sys/devices/system/cpu/cpu3/online 
+   echo '1' > /sys/devices/system/cpu/cpu4/online 
+   echo '1' > /sys/devices/system/cpu/cpu5/online 
+   echo '1' > /sys/devices/system/cpu/cpu6/online 
+   echo '1' > /sys/devices/system/cpu/cpu7/online 
+
+ #GPU
+   echo 'msm-adreno-tz' > /sys/class/kgsl/kgsl-3d0/devfreq/governor 
+   echo '650000000' > /sys/class/kgsl/kgsl-3d0/devfreq/min_freq
+   echo '650000000' > /sys/class/kgsl/kgsl-3d0/max_gpuclk 
+   echo '0' > /sys/module/adreno_idler/parameters/adreno_idler_active 
+   echo '15' > /sys/module/adreno_idler/parameters/adreno_idler_idlewait 
+   echo '7000' > /sys/module/adreno_idler/parameters/adreno_idler_idleworkload 
