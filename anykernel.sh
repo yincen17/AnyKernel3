@@ -53,6 +53,9 @@ if [ -f $compressed_image ]; then
     $bin/magiskboot --hexpatch $decompressed_image 736B69705F696E697472616D667300 77616E745F696E697472616D667300;
     $bin/magiskboot --compress=gzip $decompressed_image $compressed_image;
  fi;
+ 
+ # Add ramdisk files
+ insert_line init.rc "import /init.spectrum.rc" after "import /init.trace.rc" "import /init.spectrum.rc";
 
   ui_print "Checking for Project Treble...";
   if [ "$(file_getprop /system_root/system/build.prop ro.treble.enabled)" = "true" ]; then
