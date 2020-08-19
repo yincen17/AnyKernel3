@@ -54,9 +54,6 @@ if [ -f $compressed_image ]; then
     $bin/magiskboot --compress=gzip $decompressed_image $compressed_image;
  fi;
  
- # Add ramdisk files
- insert_line init.rc "import /init.spectrum.rc" after "import /init.trace.rc" "import /init.spectrum.rc";
-
   ui_print "Checking for Project Treble...";
   if [ "$(file_getprop /system_root/system/build.prop ro.treble.enabled)" = "true" ]; then
     ui_print "Treble Status: Supported";
@@ -68,6 +65,11 @@ if [ -f $compressed_image ]; then
 
   # Concatenate all of the dtbs to the kernel
   cat $compressed_image $dtb/*.dtb > /tmp/anykernel/Image.gz-dtb;
+fi;
+
+# migrate from /overlay to /overlay.d to enable SAR Magisk
+if [ -d $ramdisk/overlay ]; then
+  rm -rf $ramdisk/overlay;
 fi;
 
 # end ramdisk changes
