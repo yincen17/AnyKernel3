@@ -6,7 +6,7 @@ on property:dev.bootcomplete=1
    # Set default profile on first boot
    setprop persist.spectrum.profile 0
    # Enable Spectrum support
-   setprop spectrum.support 1
+   setprop spectrum.support 0
    # Add kernel name
    setprop persist.spectrum.kernel SilonT
 
