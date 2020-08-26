@@ -7,9 +7,3 @@ on property:dev.bootcomplete=1
    setprop persist.spectrum.profile 0
    # Enable Spectrum support
    setprop spectrum.support 0
-   # Add kernel name
-   setprop persist.spectrum.kernel SilonT
-rm -rf /sbin/profile.balance.sh
-rm -rf /sbin/profile.performance.sh
-rm -rf /sbin/profile.battery.sh
-rm -rf /sbin/profile.gaming.sh
