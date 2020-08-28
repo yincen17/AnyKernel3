@@ -1,9 +1,0 @@
-# Init SilonT kernel spectrum Profiles
-
-on property:dev.bootcomplete=1
-
-   # Spectrum / Performance Tweaks
-   # Set default profile on first boot
-   setprop persist.spectrum.profile 0
-   # Enable Spectrum support
-   setprop spectrum.support 0
