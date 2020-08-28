@@ -67,10 +67,6 @@ if [ -f $compressed_image ]; then
   cat $compressed_image $dtb/*.dtb > /tmp/anykernel/Image.gz-dtb;
 fi;
 
-# migrate from /overlay to /overlay.d to enable SAR Magisk
-if [ -d $ramdisk/overlay ]; then
-  rm -rf $ramdisk/overlay;
-fi;
 
 # end ramdisk changes
 
