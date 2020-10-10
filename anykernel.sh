@@ -4,15 +4,14 @@
 ## AnyKernel setup
 # begin properties
 properties() { '
-kernel.string=LightningKernel by Prorooter007 @ xda-developers
+kernel.string=Tes tes tes
 do.devicecheck=1
 do.modules=0
 do.systemless=1
 do.cleanup=1
 do.cleanuponabort=1
-device.name1=tissot
-supported.versions=9
-supported.patchlevels=
+device.name1=joyuse
+supported.versions=10
 '; } # end properties
 
 # shell variables
