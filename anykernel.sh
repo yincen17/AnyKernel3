@@ -7,13 +7,13 @@ properties() { '
 kernel.string=SilonT kernel by @ThisIsTag
 do.devicecheck=1
 do.modules=0
-do.systemless=1
+do.systemless=0
 do.cleanup=1
 do.cleanuponabort=0
 device.name1=joyeuse
-device.name2=
-device.name3=
-device.name4=
+device.name2=curtana
+device.name3=gram
+device.name4=excalibur
 device.name5=
 supported.versions=10
 supported.patchlevels=
